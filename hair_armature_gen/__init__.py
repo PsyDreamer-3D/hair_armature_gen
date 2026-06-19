@@ -19,6 +19,15 @@ if _needs_reload:
 del _needs_reload
 # END — workflow remove
 
+bl_info = {
+    "name": "Hair Armature Generator",
+    "author": "Jess G",
+    "version": (0, 1, 0),
+    "blender": (5, 1, 0),
+    "location": "View3D > Sidebar > Mesh Tools",
+    "description": "Generate structural guide armatures from hair card meshes",
+    "category": "Mesh",
+}
 
 def register():
     properties.register()

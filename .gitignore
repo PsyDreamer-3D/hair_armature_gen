@@ -1,6 +1,81 @@
+.idea
+# Python bytecode
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
+*$py.class
+
+# Compiled extensions
+*.so
+*.pyd
+*.dll
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+.venv-*/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+.eggs/
+
+# Installer / archive artifacts
+*.zip
+*.tar.gz
+
+# Editor / IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# Testing / coverage
+.coverage
+.coverage.*
+.pytest_cache/
+nosetests.xml
+coverage.xml
+htmlcov/
+
+# Type checkers / lint caches
+.mypy_cache/
+.pylint.d/
+.ropeproject
+
+# Python tooling
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints
+
+# Local config / secrets
+local_settings.py
+secrets.json
+.env
+.env.*
+
+# Blender backups and caches
 *.blend1
 *.blend2
+*.blend@ 
+*.blendcache
+*.blend1.gz
+*.blend2.gz
+
+# Project-specific (already present in this workspace)
+# Ignore Python bytecode directories that currently exist in the repo:
+hair_armature_gen/**/__pycache__/

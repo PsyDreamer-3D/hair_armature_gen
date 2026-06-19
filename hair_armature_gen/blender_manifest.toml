@@ -7,7 +7,7 @@ tagline = "Generate structural guide armatures from hair card meshes"
 maintainer = "Jess G"
 type = "add-on"
 
-blender_version_min = "5.0.1"
+blender_version_min = "5.1.0"
 
 license = ["SPDX:GPL-2.0-or-later"]
 category = "Rigging"

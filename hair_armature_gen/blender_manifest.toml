@@ -1,0 +1,13 @@
+schema_version = "1.0.0"
+
+id = "hair_armature_gen"
+version = "0.1.0"
+name = "Hair Armature Generator"
+tagline = "Generate structural guide armatures from hair card meshes"
+maintainer = "Jess G"
+type = "add-on"
+
+blender_version_min = "5.0.1"
+
+license = ["SPDX:GPL-2.0-or-later"]
+category = "Rigging"

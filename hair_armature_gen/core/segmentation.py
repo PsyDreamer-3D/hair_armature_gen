@@ -3,13 +3,16 @@ import bmesh
 
 
 def segment_mesh(mesh_obj, angle_threshold_rad):
-    """Return a list of face groups (each group is a connected component).
+    """Return a list of vertex-position groups (one group per connected component).
 
     Two faces are in the same component if the edge between them has a
     dihedral angle less than *angle_threshold_rad*.  Border edges (only one
     linked face) are never boundary edges.
 
-    Returns list[list[BMFace]], sorted largest group first.
+    Vertex positions are extracted and copied before the BMesh is freed, so
+    callers receive plain mathutils.Vector lists with no BMesh dependency.
+
+    Returns list[list[mathutils.Vector]], sorted largest group first.
     """
     bm = bmesh.new()
     bm.from_mesh(mesh_obj.data)
@@ -26,19 +29,19 @@ def segment_mesh(mesh_obj, angle_threshold_rad):
             boundary_edges.add(edge.index)
 
     visited = set()
-    segments = []
+    raw_segments = []
 
     for start_face in bm.faces:
         if start_face.index in visited:
             continue
 
-        group = []
+        face_group = []
         queue = [start_face]
         visited.add(start_face.index)
 
         while queue:
             face = queue.pop()
-            group.append(face)
+            face_group.append(face)
             for edge in face.edges:
                 if edge.index in boundary_edges:
                     continue
@@ -49,9 +52,19 @@ def segment_mesh(mesh_obj, angle_threshold_rad):
                         visited.add(neighbour.index)
                         queue.append(neighbour)
 
-        segments.append(group)
+        raw_segments.append(face_group)
+
+    raw_segments.sort(key=lambda g: len(g), reverse=True)
+
+    # Extract vertex positions while the BMesh is still alive.
+    segments = []
+    for face_group in raw_segments:
+        seen = {}
+        for face in face_group:
+            for vert in face.verts:
+                if vert.index not in seen:
+                    seen[vert.index] = vert.co.copy()
+        segments.append(list(seen.values()))
 
     bm.free()
-
-    segments.sort(key=lambda g: len(g), reverse=True)
     return segments

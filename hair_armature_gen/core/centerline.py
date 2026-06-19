@@ -2,20 +2,15 @@ import numpy as np
 from mathutils import Vector
 
 
-def compute_centerline(faces):
+def compute_centerline(vertex_positions):
     """Return (p0, p1) as mathutils.Vectors defining the PCA major-axis endpoints.
 
-    Collects all unique vertex positions from *faces* (a list of BMFace),
-    runs SVD to find the principal axis, then projects vertices onto that
-    axis to find the two extreme endpoints.
+    *vertex_positions* is a list of mathutils.Vector (world-space or local-space
+    positions of vertices belonging to one segment, as returned by segment_mesh).
+    Runs SVD to find the principal axis and projects vertices onto it to find
+    the two extreme endpoints.
     """
-    seen = {}
-    for face in faces:
-        for vert in face.verts:
-            if vert.index not in seen:
-                seen[vert.index] = vert.co.copy()
-
-    positions = np.array([list(v) for v in seen.values()], dtype=np.float64)
+    positions = np.array([list(v) for v in vertex_positions], dtype=np.float64)
 
     centroid = positions.mean(axis=0)
     centered = positions - centroid

@@ -4,7 +4,7 @@ from mathutils import Vector
 
 from ..core import segmentation, centerline, armature_builder
 
-_MIN_FACES = 3
+_MIN_VERTS = 3
 
 
 class HAIR_RIG_OT_generate(Operator):
@@ -28,7 +28,7 @@ class HAIR_RIG_OT_generate(Operator):
         spacing = settings.bone_spacing
 
         segments = segmentation.segment_mesh(mesh_obj, threshold)
-        segments = [s for s in segments if len(s) >= _MIN_FACES]
+        segments = [s for s in segments if len(s) >= _MIN_VERTS]
 
         if not segments:
             self.report(
@@ -43,8 +43,8 @@ class HAIR_RIG_OT_generate(Operator):
         mesh_centroid = sum(bb_world, Vector()) / 8.0
 
         chains = []
-        for faces in segments:
-            p0, p1 = centerline.compute_centerline(faces)
+        for verts in segments:
+            p0, p1 = centerline.compute_centerline(verts)
             if (p0 - mesh_centroid).length > (p1 - mesh_centroid).length:
                 p0, p1 = p1, p0
             points = centerline.sample_centerline(p0, p1, spacing)

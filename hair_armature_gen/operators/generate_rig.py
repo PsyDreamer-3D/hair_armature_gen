@@ -1,6 +1,5 @@
 import bpy
 from bpy.types import Operator
-from mathutils import Vector
 
 from ..core import segmentation, centerline, armature_builder
 
@@ -37,15 +36,11 @@ class HAIR_RIG_OT_generate(Operator):
             )
             return {'CANCELLED'}
 
-        bb = mesh_obj.bound_box
-        world_mat = mesh_obj.matrix_world
-        bb_world = [world_mat @ Vector(corner) for corner in bb]
-        mesh_centroid = sum(bb_world, Vector()) / 8.0
-
         chains = []
         for verts in segments:
             p0, p1 = centerline.compute_centerline(verts)
-            if (p0 - mesh_centroid).length > (p1 - mesh_centroid).length:
+            # Ensure chains run top-to-bottom so bone tails face downward.
+            if p0.z < p1.z:
                 p0, p1 = p1, p0
             points = centerline.sample_centerline(p0, p1, spacing)
             if len(points) >= 2:

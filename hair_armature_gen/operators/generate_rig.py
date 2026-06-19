@@ -43,7 +43,8 @@ class HAIR_RIG_OT_generate(Operator):
             if p0.z < p1.z:
                 p0, p1 = p1, p0
             points = centerline.sample_centerline(p0, p1, spacing)
-            if len(points) >= 2:
+            points = centerline.snap_to_vertices(points, verts)
+            if len(points) >= 2 and (points[0] - points[-1]).length > 1e-6:
                 chains.append(points)
 
         if not chains:

@@ -1,5 +1,5 @@
 import numpy as np
-from mathutils import Vector
+from mathutils import Vector, kdtree
 
 
 def compute_centerline(vertex_positions):
@@ -45,3 +45,29 @@ def sample_centerline(p0, p1, spacing):
     points = [p0 + unit * (i * step) for i in range(n_intervals)]
     points.append(p1.copy())
     return points
+
+
+def snap_to_vertices(points, vertex_positions):
+    """Snap each point to the nearest vertex in *vertex_positions*.
+
+    Deduplicates consecutive positions that land on the same vertex to
+    prevent zero-length bones.  Always returns at least 2 points; if all
+    points collapse to one vertex the first and last snapped positions are
+    kept so the caller can decide whether to skip the chain.
+    """
+    kd = kdtree.KDTree(len(vertex_positions))
+    for i, v in enumerate(vertex_positions):
+        kd.insert(v, i)
+    kd.balance()
+
+    snapped = [kd.find(pt)[0].copy() for pt in points]
+
+    deduped = [snapped[0]]
+    for co in snapped[1:]:
+        if (co - deduped[-1]).length > 1e-6:
+            deduped.append(co)
+
+    if len(deduped) < 2:
+        deduped = [snapped[0], snapped[-1]]
+
+    return deduped

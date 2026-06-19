@@ -1,5 +1,5 @@
 import bpy
-from bpy.props import FloatProperty, PointerProperty
+from bpy.props import FloatProperty, IntProperty, PointerProperty
 from bpy.types import PropertyGroup
 import math
 
@@ -25,10 +25,24 @@ class HairRigSettings(PropertyGroup):
         subtype='ANGLE',
     )
 
-    bone_spacing: FloatProperty(
-        name="Bone Spacing",
-        description="Distance between consecutive bones along each centerline",
-        default=0.05,
-        min=0.001,
+    max_chains: IntProperty(
+        name="Max Chains",
+        description="Maximum number of bone chains to generate (0 = no limit, largest segments first)",
+        default=0,
+        min=0,
+    )
+
+    min_chain_separation: FloatProperty(
+        name="Min Separation",
+        description="Minimum distance between chain midpoints; chains closer than this are culled (0 = disabled)",
+        default=0.0,
+        min=0.0,
         unit='LENGTH',
+    )
+
+    bones_per_chain: IntProperty(
+        name="Bones Per Chain",
+        description="Number of bones in each generated chain",
+        default=4,
+        min=1,
     )

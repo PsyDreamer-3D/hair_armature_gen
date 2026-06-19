@@ -15,9 +15,19 @@ class HAIR_RIG_PT_main(Panel):
 
         layout.prop(settings, "target_object")
 
+        layout.separator()
+        layout.label(text="Segmentation")
+        layout.prop(settings, "angle_threshold")
+
+        layout.separator()
+        layout.label(text="Chain Density")
         col = layout.column(align=True)
-        col.prop(settings, "angle_threshold")
-        col.prop(settings, "bone_spacing")
+        col.prop(settings, "max_chains")
+        col.prop(settings, "min_chain_separation")
+
+        layout.separator()
+        layout.label(text="Bones")
+        layout.prop(settings, "bones_per_chain")
 
         layout.separator()
         layout.operator("hair_rig.generate", icon='ARMATURE_DATA')

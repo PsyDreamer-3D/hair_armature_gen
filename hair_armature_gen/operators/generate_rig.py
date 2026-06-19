@@ -24,7 +24,9 @@ class HAIR_RIG_OT_generate(Operator):
         settings = context.scene.hair_rig_settings
         mesh_obj = settings.target_object
         threshold = settings.angle_threshold
-        spacing = settings.bone_spacing
+        bones_per_chain = settings.bones_per_chain
+        max_chains = settings.max_chains
+        min_sep = settings.min_chain_separation
 
         segments = segmentation.segment_mesh(mesh_obj, threshold)
         segments = [s for s in segments if len(s) >= _MIN_VERTS]
@@ -42,10 +44,25 @@ class HAIR_RIG_OT_generate(Operator):
             # Ensure chains run top-to-bottom so bone tails face downward.
             if p0.z < p1.z:
                 p0, p1 = p1, p0
-            points = centerline.sample_centerline(p0, p1, spacing)
+            points = centerline.sample_centerline(p0, p1, bones_per_chain)
             points = centerline.snap_to_vertices(points, verts)
             if len(points) >= 2 and (points[0] - points[-1]).length > 1e-6:
                 chains.append(points)
+
+        # Cull chains whose midpoints are too close to an already-accepted chain.
+        if min_sep > 0.0:
+            accepted_midpoints = []
+            filtered = []
+            for points in chains:
+                mid = points[len(points) // 2]
+                if all((mid - m).length >= min_sep for m in accepted_midpoints):
+                    accepted_midpoints.append(mid)
+                    filtered.append(points)
+            chains = filtered
+
+        # Cap total chain count (segments are already sorted largest-first).
+        if max_chains > 0:
+            chains = chains[:max_chains]
 
         if not chains:
             self.report({'WARNING'}, "Could not compute any bone chains.")

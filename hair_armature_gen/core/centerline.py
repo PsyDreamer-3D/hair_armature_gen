@@ -27,22 +27,23 @@ def compute_centerline(vertex_positions):
     return p0, p1
 
 
-def sample_centerline(p0, p1, spacing):
-    """Return a list of evenly-spaced points from p0 to p1.
+def sample_centerline(p0, p1, bone_count):
+    """Return bone_count + 1 evenly-spaced points from p0 to p1.
 
-    Always includes p0 and p1.  If the distance is shorter than *spacing*,
-    returns [p0, p1] (one bone).
+    *bone_count* is the number of bones desired; the returned list has
+    one extra point so that consecutive pairs form exactly that many bones.
+    Minimum of 1 bone (2 points) regardless of the argument.
     """
     direction = p1 - p0
     length = direction.length
     if length < 1e-6:
         return [p0.copy(), p1.copy()]
 
+    n = max(1, bone_count)
     unit = direction / length
-    n_intervals = max(1, round(length / spacing))
-    step = length / n_intervals
+    step = length / n
 
-    points = [p0 + unit * (i * step) for i in range(n_intervals)]
+    points = [p0 + unit * (i * step) for i in range(n)]
     points.append(p1.copy())
     return points
 

@@ -3,6 +3,7 @@
 Blender 5.0.1 add-on. All source code lives in `hair_armature_gen/`.
 
 See `../AGENTS.md` for project-wide development guidelines (hot-reload pattern, bpy.ops rules, structure conventions).
+See `../hair-rig-scope.md` for the intended scope of this add-on and how it fits into the larger project.
 
 ## Key design decisions
 

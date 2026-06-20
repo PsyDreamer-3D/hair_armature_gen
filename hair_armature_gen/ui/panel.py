@@ -30,5 +30,14 @@ class HAIR_RIG_PT_main(Panel):
         layout.prop(settings, "bones_per_chain")
 
         layout.separator()
+        layout.label(text="Output")
+        row = layout.row()
+        row.prop(settings, "merge_into_active")
+        active = context.view_layer.objects.active
+        if settings.merge_into_active and (not active or active.type != 'ARMATURE'):
+            row.label(text="No armature active", icon='ERROR')
+
+        layout.separator()
         layout.operator("hair_rig.generate", icon='ARMATURE_DATA')
+        layout.operator("hair_rig.generate_from_selection", icon='RESTRICT_SELECT_OFF')
         layout.operator("hair_rig.clear", icon='TRASH')

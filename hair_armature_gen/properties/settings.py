@@ -1,5 +1,5 @@
 import bpy
-from bpy.props import FloatProperty, IntProperty, PointerProperty
+from bpy.props import BoolProperty, FloatProperty, IntProperty, PointerProperty
 from bpy.types import PropertyGroup
 import math
 
@@ -45,4 +45,10 @@ class HairRigSettings(PropertyGroup):
         description="Number of bones in each generated chain",
         default=4,
         min=1,
+    )
+
+    merge_into_active: BoolProperty(
+        name="Merge into Active Armature",
+        description="Add chains to the active armature object instead of creating a new one",
+        default=False,
     )

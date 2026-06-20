@@ -68,9 +68,19 @@ class HAIR_RIG_OT_generate(Operator):
             self.report({'WARNING'}, "Could not compute any bone chains.")
             return {'CANCELLED'}
 
-        armature_builder.build_armature(context, mesh_obj, chains)
-
-        self.report({'INFO'}, f"Generated armature with {len(chains)} chain(s) from {len(segments)} segment(s).")
+        active = context.view_layer.objects.active
+        if settings.merge_into_active and active and active.type == 'ARMATURE':
+            armature_builder.merge_chains_into_armature(context, active, mesh_obj, chains)
+            self.report(
+                {'INFO'},
+                f"Added {len(chains)} chain(s) to '{active.name}' from {len(segments)} segment(s).",
+            )
+        else:
+            armature_builder.build_armature(context, mesh_obj, chains)
+            self.report(
+                {'INFO'},
+                f"Generated armature with {len(chains)} chain(s) from {len(segments)} segment(s).",
+            )
         return {'FINISHED'}
 
 

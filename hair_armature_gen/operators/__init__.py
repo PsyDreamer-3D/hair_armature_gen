@@ -1,8 +1,10 @@
 import bpy
 from .generate_rig import HAIR_RIG_OT_generate, HAIR_RIG_OT_clear
+from .generate_from_selection import HAIR_RIG_OT_generate_from_selection
 
 _classes = (
     HAIR_RIG_OT_generate,
+    HAIR_RIG_OT_generate_from_selection,
     HAIR_RIG_OT_clear,
 )
 

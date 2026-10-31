@@ -12,6 +12,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - **Generate Chain from Selection** — new operator that creates bone chains from manually selected vertices. Select vertices in Edit Mode, return to Object Mode, and click the button. Each separate group of selected vertices becomes its own chain; vertices are ordered by following connected edges from root to tip (falling back to longest-axis ordering for closed loops or branching shapes) and resampled evenly to **Bones Per Chain** bones.
 - **Merge into Active Armature** — new toggle in the Output section. When enabled, both generation operators add their chains to the currently active armature object instead of creating a new one. An existing `Bone_ROOT` is reused if present; a new one is created otherwise. New bones are named to avoid conflicts with any bones already in the armature.
+- Releases include an `index.json`, so the add-on can be added in Blender as a remote repository (`https://github.com/PsyDreamer-3D/hair_armature_gen/releases/latest/download/index.json`) and Blender offers updates. Replaces `scripts/generate_index.py`, whose index Blender refused to sync (no `schema_version` or `archive_size`); the release workflow now uses Blender's own `extension server-generate`.
 
 ---
 

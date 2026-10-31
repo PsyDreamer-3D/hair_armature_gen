@@ -9,6 +9,8 @@ A Blender add-on that analyses a hair card mesh, detects structural boundaries b
 
 ## Installation
 
+To get updates inside Blender, add `https://github.com/PsyDreamer-3D/hair_armature_gen/releases/latest/download/index.json` as a remote repository (**Preferences → Get Extensions → Repositories → + → Add Remote Repository**) and turn on **Check for Updates on Startup**. Releases carry the `index.json` that URL points at, so each new version shows up as an update.
+
 1. In Blender, open **Edit → Preferences → Add-ons**.
 2. Click **Install from Disk** and select the `hair_armature_gen/` folder (or a `.zip` of it).
 3. Enable **Hair Armature Generator** in the add-on list.
